@@ -9,7 +9,7 @@
     {% block head %} {% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand sticky-top navbar-dark bg-dark" aria-label="Second navbar example">
+    <nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark" aria-label="Second navbar example">
         <div class="container-fluid">
           <a class="navbar-brand" href="{{url_for('index')}}">Kino Hvězda</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,12 +18,14 @@
     
           <div class="collapse navbar-collapse" id="navbarsExample02">
             <ul class="navbar-nav me-auto">
+              {% if session['name'] %}
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="{{url_for('index')}}">Školy</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="{{url_for('map')}}">Mapa</a>
               </li>
+              {% endif %}
             </ul>
             <ul class="navbar-nav navbar-right">
               {% if session['name'] %}

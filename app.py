@@ -9,14 +9,29 @@ app.config.from_object('config')
 
 db = SQLAlchemy(app)
 
+#decorator for unauthorized access
+def authorize(func):
+   def wrapper(*args, **kwargs):
+      try:
+         session['name'] != None
+      except:
+         flash("Vaše relace vypršela. Prosím přihlašte se.")
+         return redirect(url_for('login'))
+      else:
+        return func(*args, **kwargs)
+   wrapper.__name__ = func.__name__
+   return wrapper
+
 @app.route("/")
+@authorize
 def index():
-    query = db.engine.execute('SELECT skola.nazev, mesto.nazev, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id')
-    return render_template("index.html", data=query)
+   query = db.engine.execute('SELECT skola.nazev, mesto.nazev, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id')
+   return render_template("index.html", data=query)
 
 @app.route("/map")
+@authorize
 def map():
-    return "map"
+   return "map"
 
 @app.route('/register', methods=["GET","POST"])
 def register():

@@ -1,5 +1,7 @@
-from flask import Flask, render_template, session, redirect, request
+from flask import Flask, render_template, session, redirect, request, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import text
+import bcrypt
 
 app = Flask(__name__)
 
@@ -19,45 +21,47 @@ def map():
 @app.route('/register', methods=["GET","POST"])
 def register():
    if request.method == 'GET':
-      return "register page"
-      #return render_template('register.html')
+      return render_template('register.html')
    else:
-      name = request.form['name']
+      username = request.form['username']
       password = request.form['password'].encode('utf-8')
       hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-
-      cur = mysql.connection.cursor()
-      cur.execute("INSERT INTO uzivatele (uzivatelske_jmeno, heslo) VALUES (%s, %s)",(name,hash_password))
-      mysql.connection.commit()
-      session['name'] = name
-      session['email'] = email
-      return redirect(url_for("index"))
+      try:
+         user = db.engine.execute(text("SELECT * FROM uzivatele WHERE uzivatelske_jmeno=:username"),username=username,).first()
+         if user == None:
+            db.engine.execute("INSERT INTO uzivatele (uzivatelske_jmeno, heslo) VALUES (%s, %s)",(username,hash_password))
+            session['name'] = username
+            return redirect(url_for("index"))
+         else:
+            flash("Uživatel s tímto jménem již existuje")
+            return redirect(url_for("register"))
+      except Exception as e:
+         print(e)
+         return "chyba"
+      
 
 @app.route("/login", methods=["GET","POST"])
 def login():
    if request.method == "POST":
-      username = request.form['uzivatelske_jmeno']
+      username = request.form['username']
       password = request.form['password'].encode('utf-8')
 
-      cur = mysql.connection.cursor()
-      cur.execute("SELECT * FROM uzivatele WHERE uzivatelske_jmeno=%s",(username,))
-      user = cur.fetchone()
-      cur.close()
+      user = db.engine.execute(text("SELECT * FROM uzivatele WHERE uzivatelske_jmeno=:username"),username=username,).first()
 
-      if len(user) > 0:
-         if bcrypt.hashpw(password, user['heslo'].encode('utf-8')) == user['heslo'].encode('utf-8'):
-            session['name'] = user['uzivatelske_jmeno']
-            return render_template('index.html')
-         else:
-            return "Jméno a heslo se neshodují"
+      if user != None:
+         if bcrypt.hashpw(password, user[2].encode('utf-8')) == user[2].encode('utf-8'):
+            session['name'] = user[1]
+            return redirect(url_for("index"))
+      #Login fail
+      flash("Jméno a heslo se neshodují")
+      return redirect(url_for("login"))
    else:
-        return "Login page"
-        #return render_template('login.html')
+        return render_template('login.html')
 
 @app.route('/logout')
 def logout():
    session.clear()
-   return render_template("index.html")
+   return redirect(url_for("login"))
 
 if __name__ == "__main__":
    app.run(debug=True, threaded=True)

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<title>Přihlášení</title>
+{% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+        <div class="row justify-content-center">
+            <div class="alert alert-danger w-25 mt-2 p-3" role="alert">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container-login row justify-content-center">
+    <div class="login-page">
+        <h2 id="login_h2">Přihlásit se</h2>
+        <form action="/login" class="login-form" method="POST">
+            <div class="form-group">
+                <input type="text" placeholder="Uživatelské jméno" name="username"/>
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Heslo" name="password"/>
+            </div>
+            <div class="form-group">
+                <button type="submit">Přihlásit se</button>
+            </div>
+            <p class="message">Nemáte účet? <a href="{{url_for('register')}}">Registrovat se</a></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

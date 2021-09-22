@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<title>Školy</title>
+{% endblock %}
+
+{% block body %}
+
+    <h1 class="text-center" style="margin-top: 5vh;">Seznam škol</h1>
+
+<div class="container table-responsive py-5"> 
+    <div class="card shadow mb-5 bg-white rounded">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <thead>
+            <th scope="col">Město</th>
+            <th scope="col">Škola</th>
+            <th scope="col">Obor</th>
+            <th scope="col">Počet přijatých</th>
+            <th scope="col">Rok</th>
+        </thead>
+       
+        <tbody>
+        {% for row in data %}
+           <tr>
+              <td>{{ row[0] }}</td>
+              <td>{{ row[1] }}</td>
+              <td>{{ row[2] }}</td>
+              <td>{{ row[3] }}</td>
+              <td>{{ row[4] }}</td>
+           </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+{% endblock %}

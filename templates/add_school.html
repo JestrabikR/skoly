@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<title>Přidat film</title>
+{% endblock %}
+
+{% block body %}
+<div class="container-login">
+    <div class="login-page">
+        <h2 id="login_h2">Přidat Školu</h2>
+        <form action="/addSchool" class="login-form" method="POST">
+            <div class="form-group">
+                <input type="text" placeholder="Název školy" name="school"/>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Město" name="city"/>
+            </div>
+            <div class="form-group">
+                <input type="text" placeholder="Název oboru" name="field"/>
+            </div>
+            <div class="form-group">
+                <input type="number" placeholder="Počet přijatých žáků" name="num_of_accepted"/>
+            </div>
+            <div class="form-group">
+                <input type="number" placeholder="Rok" name="year"/>
+            </div>
+            <div class="form-group">
+                <button type="submit">Uložit</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

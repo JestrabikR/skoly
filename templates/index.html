@@ -6,7 +6,35 @@
 
 {% block body %}
 
-    <h1 class="text-center" style="margin-top: 5vh;">Seznam škol</h1>
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+    {%- for message in errors %}
+        <div class="row justify-content-center">
+            <div class="alert alert-danger mt-2 col-8 col-sm-8 col-md-6 col-lg-5 col-xl-4" role="alert">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor -%}
+{% endif %}
+{% endwith %}
+
+{% with errors = get_flashed_messages(category_filter=["success"]) %}
+{% if errors %}
+    {%- for message in errors %}
+        <div class="row justify-content-center">
+            <div class="alert alert-success mt-2 col-8 col-sm-8 col-md-6 col-lg-5 col-xl-4" role="alert">
+                {{ message }}
+            </div>
+        </div>
+    {% endfor -%}
+{% endif %}
+{% endwith %}
+
+<h1 class="text-center" style="margin-top: 5vh;">Seznam škol</h1>
+
+{% if session['name'] %}
+    <a href="{{url_for('addSchool')}}"class="btn btn-success border rounded-pill"><span id="plus">+</span> Přidat školu</a>
+{% endif %}
 
 <div class="container table-responsive py-5"> 
     <div class="card shadow mb-5 bg-white rounded">

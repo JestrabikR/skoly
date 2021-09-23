@@ -14,6 +14,8 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 # Statement for enabling the development environment
 DEBUG = True
 
+GOOGLEMAPS_KEY = os.getenv("MAPS_API_KEY")
+
 # Define the application directory
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  

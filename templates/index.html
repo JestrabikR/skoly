@@ -36,6 +36,37 @@
     <a href="{{url_for('addSchool')}}"class="btn btn-success border rounded-pill"><span id="plus">+</span> Přidat školu</a>
 {% endif %}
 
+
+<table class="table">
+    <thead>
+        <tr class="filters">
+        <th>Škola
+            <select id="city" class="form-control">
+            <option>Všechny</option>
+            </select>
+        </th>
+        <th>Město
+            <select id="school" class="form-control">
+            <option>Všechny</option>
+            </select>
+        </th>
+        <th>Obor
+            <select id="field" class="form-control">
+            <option>Všechny</option>
+            </select>
+        </th>
+        <th>Rok
+            <select id="year" class="form-control">
+            <option>Všechny</option>
+            </select>
+        </th>
+        <th>
+            <button type="button" class="btn btn-dark rounded-pill col-12">Filtrovat</button>
+        </th>
+        </tr>
+    </thead>
+</table>
+
 <div class="container table-responsive py-5"> 
     <div class="card shadow mb-5 bg-white rounded">
     <table class="table table-bordered table-hover">
@@ -50,7 +81,7 @@
        
         <tbody>
         {% for row in data %}
-           <tr>
+           <tr class="school-list-row">
               <td>{{ row[0] }}</td>
               <td>{{ row[1] }}</td>
               <td>{{ row[2] }}</td>
@@ -60,6 +91,5 @@
         {% endfor %}
         </tbody>
     </table>
-</div>
 </div>
 {% endblock %}

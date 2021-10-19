@@ -2,22 +2,37 @@
 
 {% block head %}
     <title>Mapa škol</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
 {% endblock %}
 
 {% block body %}
-<div id="map" style="height: 500px; width: 500px"></div>
+<div id="map" style="height: 500px; margin-top: 5vh"></div>
     <script>
-        function initMap(){
-            var options = {
-                zoom:8,
-                center:{lat:42.3601,lng:-71.0589}
-            }
+        var map = L.map('map').setView([49.061808356330786, 17.47330634479757], 12);
 
-            var map = new google.maps.Map(document.getElementById('map'), options);
-        }
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiamVzdHJhYmlrciIsImEiOiJja3V4cWV3MzgwZ3A5MnZxcThhY290Y2N0In0.YTAILodYJQ27jNBJwLD2ZA', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'your.mapbox.access.token'
+        }).addTo(map);
+        
+        '{% for row in data %}'
+            console.log('{{row}}');
+            L.marker(
+                [
+                    parseFloat('{{row[3]}}'),
+                    parseFloat('{{row[4]}}')
+                ]).addTo(map)
+            .bindPopup('{{row[1]}}')
+        '{% endfor %}'
     </script>
-    <script asaync defer
-    src="https://maps.googleapis.com/maps/api/js?key={{api_key}}&callback=initMap&v=weekly"
-    ></script>
 
 {% endblock %}

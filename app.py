@@ -52,7 +52,8 @@ def addSchool():
 @app.route("/map")
 @authorize
 def map():
-    return render_template('map.html', api_key=os.getenv("MAPS_API_KEY"), lat="20.1115", long="40.1111")
+   query = db.engine.execute('SELECT * FROM skola')
+   return render_template("map.html", data=query)
 
 @app.route('/register', methods=["GET","POST"])
 def register():

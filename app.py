@@ -51,6 +51,29 @@ def addSchool():
          flash("Při ukládání se vyskytla chyba.", "error")
          return redirect(url_for("index"))
       
+@app.route('/addCity', methods=["GET","POST"])
+@authorize
+def addCity():
+   if request.method == 'GET':
+      return render_template('add_city.html')
+   else:
+      name = request.form['name']
+      #city = db.engine.execute(text("INSERT INTO mesto (nazev) VALUES (:nazev)"),nazev=name).first()
+      flash("Ukládání proběhlo úspěšně.", "success")
+      return redirect(url_for("index"))
+      return name
+
+@app.route('/addField', methods=["GET","POST"])
+@authorize
+def addField():
+   if request.method == 'GET':
+      return render_template('add_field.html')
+   else:
+      name = request.form['name']
+      #city = db.engine.execute(text("INSERT INTO mesto (nazev) VALUES (:nazev)"),nazev=name).first()
+      flash("Ukládání proběhlo úspěšně.", "success")
+      return redirect(url_for("index"))
+      return name
 
 @app.route("/map")
 @authorize

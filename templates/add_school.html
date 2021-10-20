@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block head %}
-<title>Přidat film</title>
+<title>Přidat školu</title>
 {% endblock %}
 
 {% block body %}
@@ -12,11 +12,14 @@
             <div class="form-group">
                 <input type="text" placeholder="Název školy" name="school"/>
             </div>
-            <div class="form-group">
-                <input type="text" placeholder="Město" name="city"/>
+            <!-- Předělat na dropdowny -->
+            <div class="form-group" style="margin-bottom: 5px">
+                <input type="text" style="margin-bottom:-3px" placeholder="Město" name="city"/>
+                <a href="/addCity" style="text-decoration: none; font-size: 12px; color: grey; ">Přidat město</a>
             </div>
-            <div class="form-group">
-                <input type="text" placeholder="Název oboru" name="field"/>
+            <div class="form-group" style="margin-bottom: 5px">
+                <input type="text" style="margin-bottom:-3px" placeholder="Název oboru" name="field"/>
+                <a href="/addField" style="text-decoration: none; font-size: 12px; color: grey; ">Přidat obor</a>
             </div>
             <div class="form-group">
                 <input type="number" placeholder="Počet přijatých žáků" name="num_of_accepted"/>
@@ -27,6 +30,7 @@
             <div class="form-group">
                 <button type="submit">Uložit</button>
             </div>
+            
         </form>
     </div>
 </div>

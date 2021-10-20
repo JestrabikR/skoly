@@ -60,10 +60,13 @@ def addCity():
       return render_template('add_city.html')
    else:
       name = request.form['name']
-      #city = db.engine.execute(text("INSERT INTO mesto (nazev) VALUES (:nazev)"),nazev=name).first()
-      flash("Ukládání proběhlo úspěšně.", "success")
+      try:
+         db.engine.execute("INSERT INTO mesto (nazev) VALUES ('%s')" % (name))
+         flash("Ukládání proběhlo úspěšně.", "success")
+      except Exception as e:
+         flash("Při ukládání se vyskytl problém." + str(e), "error")
       return redirect(url_for("index"))
-      return name
+      
 
 @app.route('/addField', methods=["GET","POST"])
 @authorize
@@ -72,10 +75,13 @@ def addField():
       return render_template('add_field.html')
    else:
       name = request.form['name']
-      #city = db.engine.execute(text("INSERT INTO obor (nazev) VALUES (:nazev)"),nazev=name).first()
-      flash("Ukládání proběhlo úspěšně.", "success")
+      try:
+         db.engine.execute("INSERT INTO obor (nazev) VALUES ('%s')" % (name))
+         flash("Ukládání proběhlo úspěšně.", "success")
+      except:
+         flash("Při ukládání se vyskytl problém.", "error")
       return redirect(url_for("index"))
-      return name
+      
 
 @app.route("/map")
 @authorize

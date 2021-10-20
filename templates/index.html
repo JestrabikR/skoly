@@ -43,21 +43,33 @@
         <th>Škola
             <select id="city" class="form-control">
             <option>Všechny</option>
+            {% for row in data %}
+                <option>{{row[1]}}</option>
+            {% endfor %}
             </select>
         </th>
         <th>Město
             <select id="school" class="form-control">
             <option>Všechny</option>
+            {% for row in data %}
+                <option>{{row[1]}}</option>
+            {% endfor %}
             </select>
         </th>
         <th>Obor
             <select id="field" class="form-control">
             <option>Všechny</option>
+            {% for row in data %}
+                <option>{{row[1]}}</option>
+            {% endfor %}
             </select>
         </th>
         <th>Rok
             <select id="year" class="form-control">
             <option>Všechny</option>
+            {% for row in data %}
+                <option>{{row[1]}}</option>
+            {% endfor %}
             </select>
         </th>
         <th>

@@ -26,7 +26,10 @@ def authorize(func):
 @app.route("/")
 def index():
    query = db.engine.execute('SELECT skola.nazev, mesto.nazev, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id')
-   return render_template("index.html", data=query)
+   result = []
+   for row in query:
+      result.append(row)
+   return render_template("index.html", data=result)
 
 @app.route('/addSchool', methods=["GET","POST"])
 @authorize

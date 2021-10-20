@@ -35,7 +35,9 @@ def index():
 @authorize
 def addSchool():
    if request.method == 'GET':
-      return render_template('add_school.html')
+      fields = db.engine.execute('SELECT * FROM obor')
+      cities = db.engine.execute('SELECT * FROM mesto')
+      return render_template('add_school.html', fields=fields, cities=cities)
    else:
       school = request.form['school']
       city = request.form['city']
@@ -70,7 +72,7 @@ def addField():
       return render_template('add_field.html')
    else:
       name = request.form['name']
-      #city = db.engine.execute(text("INSERT INTO mesto (nazev) VALUES (:nazev)"),nazev=name).first()
+      #city = db.engine.execute(text("INSERT INTO obor (nazev) VALUES (:nazev)"),nazev=name).first()
       flash("Ukládání proběhlo úspěšně.", "success")
       return redirect(url_for("index"))
       return name

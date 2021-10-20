@@ -18,7 +18,7 @@
 .login-page h2{
   text-align: center;
 }
-.login-page input {
+.login-page input, .custom-input {
   font-family: "Roboto", sans-serif;
   outline: 0;
   background: #f2f2f2;

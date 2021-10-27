@@ -41,17 +41,17 @@
     <thead>
         <tr class="filters">
         <th>Škola
-            <select id="city" class="form-control">
+            <select id="school" class="form-control">
             <option>Všechny</option>
             {% for row in data %}
-                <option>{{row[1]}}</option>
+                <option>{{row[0]}}</option>
             {% endfor %}
             </select>
         </th>
         <th>Město
-            <select id="school" class="form-control">
+            <select id="city" class="form-control">
             <option>Všechny</option>
-            {% for row in data %}
+            {% for row in cities %}
                 <option>{{row[1]}}</option>
             {% endfor %}
             </select>
@@ -59,7 +59,7 @@
         <th>Obor
             <select id="field" class="form-control">
             <option>Všechny</option>
-            {% for row in data %}
+            {% for row in fields %}
                 <option>{{row[1]}}</option>
             {% endfor %}
             </select>
@@ -67,8 +67,8 @@
         <th>Rok
             <select id="year" class="form-control">
             <option>Všechny</option>
-            {% for row in data %}
-                <option>{{row[1]}}</option>
+            {% for row in years %}
+                <option>{{row[0]}}</option>
             {% endfor %}
             </select>
         </th>
@@ -104,4 +104,9 @@
         </tbody>
     </table>
 </div>
+<script src="{{url_for('static',filename='js/filter.js')}}"></script>
+<script>
+    var select = document.getElementById("city")
+    console.log(select.options[select.selectedIndex].value);
+</script>
 {% endblock %}

@@ -10,9 +10,20 @@
         <h2 id="login_h2">Přidat Školu</h2>
         <form action="/addSchool" class="login-form" method="POST">
             <div class="form-group">
-                <input type="text" placeholder="Název školy" name="school"/>
+                <input type="text" placeholder="Název školy" name="school" required/>
             </div>
-            <!-- Předělat na dropdowny -->
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input pattern="^\d+\.\d+$" placeholder="Zem. šířka" name="geoLat" required/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input pattern="^\d+\.\d+$" placeholder="Zem. délka" name="geoLong" required/>
+                    </div>
+                </div>
+            </div>
             <div class="form-group" style="margin-bottom: 5px">
                 <select name="city" class="form-control custom-input" style="margin-bottom: 0px">
                     <option>Vyberte město</option>
@@ -32,10 +43,10 @@
                 <a href="/addField" style="text-decoration: none; font-size: 12px; color: grey; ">Přidat obor</a>
             </div>
             <div class="form-group">
-                <input type="number" placeholder="Počet přijatých žáků" name="num_of_accepted"/>
+                <input type="number" placeholder="Počet přijatých žáků" name="num_of_accepted" required/>
             </div>
             <div class="form-group">
-                <input type="number" placeholder="Rok" name="year"/>
+                <input type="number" placeholder="Rok" name="year" required/>
             </div>
             <div class="form-group">
                 <button type="submit">Uložit</button>

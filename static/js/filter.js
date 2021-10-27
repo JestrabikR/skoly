@@ -1,10 +1,9 @@
 var
   filters = {
-    user: null,
-    status: null,
-    milestone: null,
-    priority: null,
-    tags: null
+    city: null,
+    school: null,
+    field: null,
+    year: null,
   };
 
 function updateFilters() {
@@ -14,11 +13,12 @@ function updateFilters() {
       result = true;
     
     Object.keys(filters).forEach(function (filter) {
-      if (filters[filter] && (filters[filter] != 'None') && (filters[filter] != 'Any')) {
+      console.log(filters[filter] === self.data(filter))
+      if (filters[filter] && (filters[filter] != 'Všechny')) {
         result = result && filters[filter] === self.data(filter);
       }
     });
-
+    console.log(result)
     return result;
   }).show();
 }
@@ -29,25 +29,17 @@ function changeFilter(filterName) {
 }
 
 $('#city').on('change', function() {
-  changeFilter.call(this, 'user');
+  changeFilter.call(this, 'city');
 });
 
 $('#school').on('change', function() {
-  changeFilter.call(this, 'status');
+  changeFilter.call(this, 'school');
 });
 
 $('#field').on('change', function() {
-  changeFilter.call(this, 'milestone');
+  changeFilter.call(this, 'field');
 });
 
-$('#tags-year').on('change', function() {
-  changeFilter.call(this, 'tags');
+$('#year').on('change', function() {
+  changeFilter.call(this, 'year');
 });
-
-/*
-future use for a text input filter
-$('#search').on('click', function() {
-    $('.box').hide().filter(function() {
-        return $(this).data('order-number') == $('#search-criteria').val().trim();
-    }).show();
-});*/

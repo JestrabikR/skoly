@@ -25,11 +25,14 @@ def authorize(func):
 
 @app.route("/")
 def index():
+   fields = db.engine.execute('SELECT * FROM obor')
+   cities = db.engine.execute('SELECT * FROM mesto')
+   years = db.engine.execute('SELECT DISTINCT rok FROM pocet_prijatych')
    query = db.engine.execute('SELECT skola.nazev, mesto.nazev, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id')
    result = []
    for row in query:
       result.append(row)
-   return render_template("index.html", data=result)
+   return render_template("index.html", data=result, cities=cities, fields=fields, years=years)
 
 @app.route('/addSchool', methods=["GET","POST"])
 @authorize
@@ -40,16 +43,21 @@ def addSchool():
       return render_template('add_school.html', fields=fields, cities=cities)
    else:
       school = request.form['school']
+      geoLat = request.form['geoLat']
+      geoLong = request.form['geoLong']
       city = request.form['city']
       field = request.form['field']
       num_of_accepted = request.form['num_of_accepted']
       year = request.form['year']
       try:
-         #TODO: insert
-         #user = db.engine.execute(text("INSERT INTO saly (:school, :city, :field, :num_of_accepted, :year)"),school=school, city=city, field=field, num_of_accepted=num_of_accepted, year=year).first()
+         db.engine.execute("INSERT INTO skola (nazev, mesto, geo_lat, geo_long) VALUES ('%s', %s, %s, %s)" % (school, city, geoLat, geoLong))
+         insertedSchoolId = db.engine.execute("SELECT id FROM skola WHERE nazev='%s'" % (school)).first()
+         db.engine.execute("INSERT INTO pocet_prijatych (obor, skola, pocet, rok) VALUES ('%s', %s, %s, %s)" % (field, insertedSchoolId[0], num_of_accepted, year))
+
          flash("Ukládání proběhlo úspěšně.", "success")
          return redirect(url_for("index"))
       except Exception as e:
+         print(e)
          flash("Při ukládání se vyskytla chyba.", "error")
          return redirect(url_for("index"))
       

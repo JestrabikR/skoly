@@ -13,12 +13,10 @@ function updateFilters() {
       result = true;
     
     Object.keys(filters).forEach(function (filter) {
-      console.log(filters[filter] === self.data(filter))
       if (filters[filter] && (filters[filter] != 'Všechny')) {
-        result = result && filters[filter] === self.data(filter);
+        result = result && filters[filter] == self.data(filter);
       }
     });
-    console.log(result)
     return result;
   }).show();
 }

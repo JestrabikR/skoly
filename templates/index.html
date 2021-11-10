@@ -72,9 +72,6 @@
             {% endfor %}
             </select>
         </th>
-        <th>
-            <button type="button" class="btn btn-dark rounded-pill col-12">Filtrovat</button>
-        </th>
         </tr>
     </thead>
 </table>
@@ -84,8 +81,8 @@
     <table class="table table-bordered table-hover">
       <thead class="thead-dark">
         <thead>
-            <th scope="col">Město</th>
             <th scope="col">Škola</th>
+            <th scope="col">Město</th>
             <th scope="col">Obor</th>
             <th scope="col">Počet přijatých</th>
             <th scope="col">Rok</th>
@@ -93,20 +90,20 @@
        
         <tbody>
         {% for row in data %}
-           <tr class="school-list-row">
-              <td>{{ row[0] }}</td>
-              <td>{{ row[1] }}</td>
-              <td>{{ row[2] }}</td>
-              <td>{{ row[3] }}</td>
-              <td>{{ row[4] }}</td>
-           </tr>
+           <tr class="school-list-row"
+                data-school="{{row[0]}}"
+                data-city="{{row[1]}}"
+                data-field="{{row[2]}}"
+                data-year="{{row[4]}}">
+                <td>{{row[0]}}</td>
+                <td>{{row[1]}}</td>
+                <td>{{row[2]}}</td>
+                <td>{{row[3]}}</td>
+                <td>{{row[4]}}</td>
+            </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
 <script src="{{url_for('static',filename='js/filter.js')}}"></script>
-<script>
-    var select = document.getElementById("city")
-    console.log(select.options[select.selectedIndex].value);
-</script>
 {% endblock %}

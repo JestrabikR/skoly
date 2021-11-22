@@ -28,7 +28,7 @@ def index():
    fields = db.engine.execute('SELECT * FROM obor')
    cities = db.engine.execute('SELECT * FROM mesto')
    years = db.engine.execute('SELECT DISTINCT rok FROM pocet_prijatych')
-   query = db.engine.execute('SELECT skola.nazev, mesto.nazev, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id')
+   query = db.engine.execute('SELECT skola.id, skola.nazev, mesto.nazev, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id')
    result = []
    for row in query:
       result.append(row)
@@ -89,7 +89,36 @@ def addField():
       except:
          flash("Při ukládání se vyskytl problém.", "error")
       return redirect(url_for("index"))
-      
+
+#route for editing school
+@app.route('/editSchool/<id>', methods=["GET","POST"])
+@authorize
+def editSchool(id):
+   if request.method == 'GET':
+      school = db.engine.execute("SELECT * FROM skola WHERE id=%s" % (id)).first()
+      fields = db.engine.execute('SELECT * FROM obor')
+      cities = db.engine.execute('SELECT * FROM mesto')
+      school_join = db.engine.execute('SELECT skola.id, skola.nazev, mesto.nazev, obor.id, obor.nazev, pocet_prijatych.pocet, pocet_prijatych.rok, mesto.id FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id WHERE skola.id=%s' % (id)).first()
+      print(school_join)
+      return render_template('edit_school.html', school=school, school_join=school_join, fields=fields, cities=cities)
+   else:
+      school_join = db.engine.execute('SELECT obor.id FROM mesto JOIN skola ON mesto.id=skola.mesto JOIN pocet_prijatych ON skola.id=pocet_prijatych.skola JOIN obor ON pocet_prijatych.obor=obor.id WHERE skola.id=%s' % (id)).first()
+      school = request.form['school']
+      geoLat = request.form['geoLat']
+      geoLong = request.form['geoLong']
+      city = request.form['city']
+      field = request.form['field']
+      num_of_accepted = request.form['num_of_accepted']
+      year = request.form['year']
+      try:
+         db.engine.execute("UPDATE skola SET nazev='%s', mesto=%s, geo_lat=%s, geo_long=%s WHERE id=%s" % (school, city, geoLat, geoLong, id))
+         db.engine.execute("UPDATE pocet_prijatych SET obor=%s, pocet=%s, rok=%s WHERE skola=%s AND obor=%s" % (field, num_of_accepted, year, id, school_join[0]))
+         print("UPDATE pocet_prijatych SET obor=%s, pocet=%s, rok=%s WHERE skola=%s AND obor=%s" % (field, num_of_accepted, year, id, school_join[0]))
+         flash("Ukládání proběhlo úspěšně.", "success")
+         return redirect(url_for("index"))
+      except Exception as e:
+         flash("Při ukládání se vyskytl problém." + str(e), "error")
+         return redirect(url_for("index"))
 
 @app.route("/map")
 @authorize

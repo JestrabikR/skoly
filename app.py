@@ -120,6 +120,18 @@ def editSchool(id):
          flash("Při ukládání se vyskytl problém." + str(e), "error")
          return redirect(url_for("index"))
 
+#route for deleting school
+@app.route('/deleteSchool/<id>', methods=["GET"])
+@authorize
+def deleteSchool(id):
+   try:
+      db.engine.execute("DELETE FROM skola WHERE id=%s" % (id))
+      flash("Smazání proběhlo úspěšně.", "success")
+      return redirect(url_for("index"))
+   except Exception as e:
+      flash("Při mazání se vyskytl problém." + str(e), "error")
+      return redirect(url_for("index"))
+
 @app.route("/map")
 @authorize
 def map():
